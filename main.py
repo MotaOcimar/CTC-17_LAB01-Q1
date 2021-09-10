@@ -16,4 +16,5 @@ path_planner = PathPlanner(cost_map)
 path, cost = path_planner.a_star(start_node_id, goal_node_id)
 
 print("Cost: ", cost)
+print("Path: ", path)
 plot_path(cost_map, start_node_id, goal_node_id, path)

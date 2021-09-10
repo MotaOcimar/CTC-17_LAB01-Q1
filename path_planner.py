@@ -6,9 +6,15 @@ class PathPlanner(object):
         self.cost_map = cost_map
 
 
-    def construct_path(self):
-        # TODO
-        path = []
+    def construct_path(self, goal_node):
+        current_node = goal_node
+        reversed_path = []
+
+        while current_node is not None:
+            reversed_path.append(current_node.id)
+            current_node = current_node.path_parent
+
+        return reversed_path[::-1]
 
 
     def a_star(self, start_node_id, goal_node_id):
@@ -36,6 +42,8 @@ class PathPlanner(object):
                 cost_current_to_successor = current_node.distance_to(successor)
 
                 if successor.cost_to_here > current_node.cost_to_here + cost_current_to_successor:
+                    successor.path_parent = current_node
+
                     successor.cost_to_here = current_node.cost_to_here + cost_current_to_successor # g
                     if successor.cost_from_here is inf: successor.cost_from_here = successor.distance_to(goal_node) # h
                     successor.cost_passing_through = successor.cost_to_here + successor.cost_from_here # f
@@ -45,5 +53,5 @@ class PathPlanner(object):
                     else:
                         heapq.heappush(sorted_nodes, successor)
 
-        return self.construct_path(), goal_node.cost_to_here
+        return self.construct_path(goal_node), goal_node.cost_to_here
     
