@@ -1,5 +1,6 @@
 import csv
 from math import inf, sqrt
+import geopy.distance as geo_distance
 
 class CostMap(object):
     def __init__(self, data_filename):
@@ -24,16 +25,19 @@ class CostMap(object):
 
     def get_successors(self, node):
         successors = []
+        
+        if node.id - 2 in self.nodes.keys():
+            successors.append(self.nodes[node.id-2])
+        
         if node.id %2:
             if node.id - 1 in self.nodes.keys():
                 successors.append(self.nodes[node.id-1])
-            if node.id + 2 in self.nodes.keys():
-                successors.append(self.nodes[node.id+2])
         else:
-            if node.id - 2 in self.nodes.keys():
-                successors.append(self.nodes[node.id-2])
             if node.id + 1 in self.nodes.keys():
                 successors.append(self.nodes[node.id+1])
+        
+        if node.id + 2 in self.nodes.keys():
+            successors.append(self.nodes[node.id+2])
 
         return successors
 
@@ -49,7 +53,7 @@ class Node(object):
         self.cost_from_here = inf # h
 
     def distance_to(self, node):
-        return sqrt((self.lat - node.lat) ** 2 + (self.lng - node.lng) ** 2)
+        return geo_distance.distance((self.lat, self.lng), (node.lat, node.lng)).km
 
     def __lt__(self, other):
         return self.cost_passing_through < other.cost_passing_through
