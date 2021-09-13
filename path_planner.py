@@ -54,4 +54,3 @@ class PathPlanner(object):
                         heapq.heappush(sorted_nodes, successor)
 
         return self.construct_path(goal_node), goal_node.cost_to_here
-    

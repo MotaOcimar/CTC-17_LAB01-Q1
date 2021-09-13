@@ -41,6 +41,11 @@ class CostMap(object):
 
         return successors
 
+    def distance_between(self, node_id_a, node_id_b, w=None):
+        node_a = self.nodes[node_id_a]
+        node_b = self.nodes[node_id_b]
+        return node_a.distance_to(node_b)
+
 
 class Node(object):
     def __init__(self, id, lat, lng):
