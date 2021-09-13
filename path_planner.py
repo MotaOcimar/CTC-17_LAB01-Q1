@@ -33,6 +33,7 @@ class PathPlanner(object):
         # Iterates through the nodes with the lowest cost estimate looking for the goal
         while len(sorted_nodes) != 0:
             current_node = heapq.heappop(sorted_nodes)
+            current_node.is_needed_to_improve = False
             if current_node.id == goal_node_id:
                 break
             
@@ -41,7 +42,8 @@ class PathPlanner(object):
             for successor in successors:
                 cost_current_to_successor = current_node.distance_to(successor)
 
-                if successor.cost_to_here > current_node.cost_to_here + cost_current_to_successor:
+                if successor.cost_to_here > current_node.cost_to_here + cost_current_to_successor \
+                    and successor.is_needed_to_improve:
                     successor.path_parent = current_node
 
                     successor.cost_to_here = current_node.cost_to_here + cost_current_to_successor # g

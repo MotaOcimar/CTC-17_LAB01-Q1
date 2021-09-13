@@ -56,6 +56,7 @@ class Node(object):
         self.cost_passing_through = inf # f
         self.cost_to_here = inf # g
         self.cost_from_here = inf # h
+        self.is_needed_to_improve = True
 
     def distance_to(self, node):
         return geo_distance.distance((self.lat, self.lng), (node.lat, node.lng)).km
